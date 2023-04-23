@@ -14,13 +14,34 @@ const Shop = () => {
         .then(data => setProducts (data));
     },[]);
 
-    useEffect(()=>{
+  useEffect(()=>{
         const storeCart = getShoppingCart();
-        console.log(storeCart); 
-    },[])
+        const savedCart = [];
+
+        // step 01 : get id of the addedproduct
+
+        for(const id in storeCart ){
+
+            // step-02: get product from products state by using id
+
+            const addedProduct = products.find(product => product.id === id)
+            if(addedProduct){
+                // step -03: add quantity
+                const quantity = storeCart[id];
+                addedProduct.quantity = quantity;
+
+                // step- 04: add the added product to the saved cart
+                savedCart.push(addedProduct);
+
+            }
+            //console.log('addedProduct', addedProduct)
+        }
+        // step-05: set the cart
+        setCart(savedCart);
+  },[products])
 
     const handleAddToCart=(product)=>{
-        //console.log(product)
+        console.log('products',product)
         //cart.push(product)
         const newCart = [...cart,product];
         setCart(newCart);
